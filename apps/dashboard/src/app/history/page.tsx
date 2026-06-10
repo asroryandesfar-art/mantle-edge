@@ -10,11 +10,10 @@ import { StatCard } from "@/components/dashboard/StatCard"
 import { Card, CardContent } from "@/components/ui/card"
 import { ExternalLink, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
+import { FEED_URL, FEED_REFRESH_INTERVAL_MS, fetcher } from "@/lib/feed"
 
 export default function HistoryPage() {
-  const { data, error } = useSWR("/data/agent-feed.json", fetcher)
+  const { data, error } = useSWR(FEED_URL, fetcher, { refreshInterval: FEED_REFRESH_INTERVAL_MS })
   const [search, setSearch] = useState("")
 
   const trades = useMemo(() => {

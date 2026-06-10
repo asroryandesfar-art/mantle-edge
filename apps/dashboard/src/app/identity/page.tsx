@@ -6,11 +6,10 @@ import { Badge } from "@/components/ui/badge"
 import { TerminalHeader } from "@/components/dashboard/TerminalHeader"
 import { PulsingDot } from "@/components/dashboard/PulsingDot"
 import { Fingerprint, ShieldCheck, Globe, Cpu, Activity, Zap } from "lucide-react"
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
+import { FEED_URL, FEED_REFRESH_INTERVAL_MS, fetcher } from "@/lib/feed"
 
 export default function IdentityPage() {
-  const { data, error } = useSWR("/data/agent-feed.json", fetcher)
+  const { data, error } = useSWR(FEED_URL, fetcher, { refreshInterval: FEED_REFRESH_INTERVAL_MS })
 
   if (error) return <div className="p-8 text-destructive">Error loading agent identity</div>
   if (!data) return <div className="p-8 text-muted-foreground animate-pulse">Fetching Agent Identity from Mantle...</div>

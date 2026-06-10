@@ -12,8 +12,7 @@ import { WalletConnectButton } from "@/components/dashboard/WalletConnectButton"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts"
 import { cn } from "@/lib/utils"
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
+import { FEED_URL, FEED_REFRESH_INTERVAL_MS, fetcher } from "@/lib/feed"
 
 const DECISION_BORDERS: Record<string, string> = {
   LONG: "border-success/40",
@@ -22,7 +21,7 @@ const DECISION_BORDERS: Record<string, string> = {
 }
 
 export default function DashboardPage() {
-  const { data, error } = useSWR("/data/agent-feed.json", fetcher, { refreshInterval: 10000 })
+  const { data, error } = useSWR(FEED_URL, fetcher, { refreshInterval: FEED_REFRESH_INTERVAL_MS })
 
   if (error) return <div className="p-8 text-destructive">Error loading agent data</div>
   if (!data) return <div className="p-8 text-muted-foreground animate-pulse">Loading dashboard...</div>
