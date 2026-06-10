@@ -67,8 +67,8 @@ Mantle mainnet explorer base: `https://explorer.mantle.xyz`
 
 ## 5. Final submission checklist
 
-- [ ] GitHub repo link (public): `<fill in>`
-- [ ] Live dashboard URL: `<fill in>`
+- [x] GitHub repo link (public): https://github.com/asroryandesfar-art/mantle-edge
+- [x] Live dashboard URL: https://dashboard-pi-flax-19.vercel.app
 - [ ] Contract addresses on Mantle:
   - AgentIdentityNFT: `<fill in>`
   - TradeLogger: `<fill in>`

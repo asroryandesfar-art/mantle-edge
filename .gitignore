@@ -33,3 +33,6 @@ pnpm-debug.log*
 .vscode/
 .idea/
 .DS_Store
+
+# Vercel
+.vercel
