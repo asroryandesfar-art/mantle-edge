@@ -1,0 +1,14 @@
+node_modules
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+**/*.tsbuildinfo
+packages/contracts/cache
+packages/contracts/artifacts
+packages/contracts/typechain-types
+data
+.git
+.env
+.env.*
+*.log

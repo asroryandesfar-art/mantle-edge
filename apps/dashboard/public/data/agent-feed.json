@@ -1,0 +1,74 @@
+{
+  "status": "LIVE",
+  "uptime": "0d 0h 2m",
+  "terminalId": "MNT-EDGE-MULTIAGENT",
+  "gasPrice": "50.0001 Gwei",
+  "agentAddress": "0x844771526F13d7a16d3135F7486545D61e81913C",
+  "apiLatencyMs": 0,
+  "position": {
+    "pair": "MNT/USDT",
+    "direction": "WAIT",
+    "size": "0.00 USD",
+    "leverage": "1x",
+    "roa": "+0.00%"
+  },
+  "comparison": {
+    "yourPnl": "+0.00%",
+    "agentPnl": "+0.00%",
+    "edge": "+0.00%"
+  },
+  "metrics": {
+    "pnl": "+0.00%",
+    "winRate": "0%",
+    "tradeCount": 0,
+    "confidenceAvg": 0,
+    "failedExecutions": 0,
+    "agentContributionPct": 100,
+    "agentContributionTrades": 0
+  },
+  "decisions": [
+    {
+      "time": "2026-06-10T20:52:33.433Z",
+      "action": "WAIT",
+      "asset": "MNT/USDT",
+      "reasoning": "Market data unavailable: fetch failed",
+      "confidence": 0
+    },
+    {
+      "time": "2026-06-10T20:52:33.430Z",
+      "action": "WAIT",
+      "asset": "ETH/USDT",
+      "reasoning": "Market data unavailable: fetch failed",
+      "confidence": 0
+    },
+    {
+      "time": "2026-06-10T20:52:33.407Z",
+      "action": "WAIT",
+      "asset": "BTC/USDT",
+      "reasoning": "Market data unavailable: fetch failed",
+      "confidence": 0
+    }
+  ],
+  "trades": [],
+  "identity": {
+    "name": "MantleEdge Multi-Agent",
+    "tokenId": "-",
+    "identifier": "did:mantle:agent:0x844771526F13d7a16d3135F7486545D61e81913C",
+    "valueManaged": "$1000.00",
+    "birthBlock": "-",
+    "authorizedSchemes": [
+      "ERC-8004",
+      "EIP-712"
+    ],
+    "uptimeSignature": "-",
+    "totalTrades": "0",
+    "totalPnl": "+0.00%",
+    "owner": "0x844771526F13d7a16d3135F7486545D61e81913C",
+    "trustScore": 0,
+    "metadata": {
+      "strategy": "Multi-Agent: Analyst -> RiskManager -> Executor -> Reporter",
+      "model": "rule-based fallback",
+      "network": "Mantle Network"
+    }
+  }
+}

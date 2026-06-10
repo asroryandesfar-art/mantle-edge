@@ -1,0 +1,24 @@
+{
+  "name": "mantle-edge",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Autonomous AI trading agent + dashboard for the Mantle network",
+  "license": "MIT",
+  "packageManager": "pnpm@11.5.3",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build:shared": "pnpm --filter @mantle-edge/shared build",
+    "dev:agent": "pnpm build:shared && pnpm --filter @mantle-edge/agent dev",
+    "dev:dashboard": "pnpm build:shared && pnpm --filter @mantle-edge/dashboard dev",
+    "build": "pnpm -r --workspace-concurrency=1 build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "clean": "pnpm -r clean && rimraf node_modules"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3"
+  }
+}

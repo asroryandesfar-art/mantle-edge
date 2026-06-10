@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Agent runtime data
+data/*.json
+data/*.db
+!data/.gitkeep
+
+# Hardhat
+packages/contracts/cache/
+packages/contracts/artifacts/
+packages/contracts/typechain-types/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store

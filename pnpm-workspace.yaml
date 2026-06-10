@@ -1,0 +1,26 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+# Required for `pnpm deploy` (used by apps/agent/Dockerfile) to bundle
+# workspace dependencies (e.g. @mantle-edge/shared) as real files.
+injectWorkspacePackages: true
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+  keccak: true
+  secp256k1: true
+  sharp: false
+  unrs-resolver: false
+minimumReleaseAgeExclude:
+  - '@next/env@16.2.9'
+  - '@next/eslint-plugin-next@16.2.9'
+  - '@next/swc-darwin-arm64@16.2.9'
+  - '@next/swc-darwin-x64@16.2.9'
+  - '@next/swc-linux-arm64-gnu@16.2.9'
+  - '@next/swc-linux-arm64-musl@16.2.9'
+  - '@next/swc-linux-x64-gnu@16.2.9'
+  - '@next/swc-linux-x64-musl@16.2.9'
+  - '@next/swc-win32-arm64-msvc@16.2.9'
+  - '@next/swc-win32-x64-msvc@16.2.9'
+  - eslint-config-next@16.2.9
+  - next@16.2.9

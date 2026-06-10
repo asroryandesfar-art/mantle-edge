@@ -1,0 +1,15 @@
+{
+  "network": "mantle",
+  "chainId": 5000,
+  "deployedAt": null,
+  "deployer": null,
+  "contracts": {
+    "AgentIdentityNFT": {
+      "address": null,
+      "agentName": null
+    },
+    "TradeLogger": {
+      "address": null
+    }
+  }
+}
