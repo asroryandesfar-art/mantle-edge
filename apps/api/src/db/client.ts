@@ -111,6 +111,7 @@ export class ApiDatabase {
     this.db.exec(SCHEMA);
     this.seedAgentStatus();
     this.seedDemoData();
+    this.cleanupFakeTxHashes();
   }
 
   /** Ensures the single `agent_status` row exists, defaulting to an idle agent with $10,000 starting balance. */
@@ -147,13 +148,22 @@ export class ApiDatabase {
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       );
       // Closed winning trade.
-      insertTrade.run(hoursAgo(5), "MNT/USDT", "LONG", 0.7421, 0.7589, 500, 11.32, "CLOSED", 78, "0xseed1a2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef123456", hoursAgo(3.5));
+      insertTrade.run(hoursAgo(5), "MNT/USDT", "LONG", 0.7421, 0.7589, 500, 11.32, "CLOSED", 78, null, hoursAgo(3.5));
       // Closed losing trade.
-      insertTrade.run(hoursAgo(3), "MNT/USDT", "SHORT", 0.7583, 0.7641, 400, -3.06, "CLOSED", 65, "0xseed2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567a", hoursAgo(2));
+      insertTrade.run(hoursAgo(3), "MNT/USDT", "SHORT", 0.7583, 0.7641, 400, -3.06, "CLOSED", 65, null, hoursAgo(2));
       // Currently open trade.
-      insertTrade.run(hoursAgo(2), "MNT/USDT", "LONG", 0.7312, null, 600, null, "OPEN", 81, "0xseed3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567ab2", null);
+      insertTrade.run(hoursAgo(2), "MNT/USDT", "LONG", 0.7312, null, 600, null, "OPEN", 81, null, null);
     });
     seed();
+  }
+
+  /**
+   * One-time cleanup for databases seeded before this fix: clears the
+   * placeholder `0xseed...` tx hashes so the trade history page shows
+   * "PAPER TRADE" instead of a link to a non-existent on-chain transaction.
+   */
+  private cleanupFakeTxHashes(): void {
+    this.db.prepare("UPDATE trades SET tx_hash = NULL WHERE tx_hash LIKE '0xseed%'").run();
   }
 
   // ---------------------------------------------------------------------

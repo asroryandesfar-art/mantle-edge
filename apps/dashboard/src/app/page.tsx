@@ -7,6 +7,7 @@ import { ConfidenceBar } from "@/components/dashboard/ConfidenceBar"
 import { LiveTicker } from "@/components/dashboard/LiveTicker"
 import { TerminalHeader } from "@/components/dashboard/TerminalHeader"
 import { StatCard } from "@/components/dashboard/StatCard"
+import { OnChainContracts } from "@/components/dashboard/OnChainContracts"
 import { PulsingDot } from "@/components/dashboard/PulsingDot"
 import { WalletConnectButton } from "@/components/dashboard/WalletConnectButton"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -205,6 +206,9 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* On-chain deployment */}
+        <OnChainContracts />
       </main>
     </div>
   )
