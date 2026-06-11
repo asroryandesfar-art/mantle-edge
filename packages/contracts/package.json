@@ -10,6 +10,8 @@
     "deploy:mantleSepolia": "hardhat run scripts/deploy.ts --network mantleSepolia",
     "deploy:agentContracts": "hardhat run scripts/deployAgentContracts.ts --network mantle",
     "deploy:agentContracts:mantleSepolia": "hardhat run scripts/deployAgentContracts.ts --network mantleSepolia",
+    "deploy:all:mantle": "hardhat run scripts/deployAll.ts --network mantle",
+    "deploy:all:mantleSepolia": "hardhat run scripts/deployAll.ts --network mantleSepolia",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "clean": "hardhat clean && rimraf cache artifacts typechain-types"
   },

@@ -45,6 +45,8 @@ CREATE TABLE IF NOT EXISTS trades (
   price REAL NOT NULL,
   size REAL NOT NULL,
   pnl REAL,
+  entry_price REAL,
+  confidence REAL NOT NULL DEFAULT 0,
   tx_hash TEXT,
   log_tx_hash TEXT,
   error TEXT
@@ -77,6 +79,8 @@ export interface TradeRecord {
   price: number;
   size: number;
   pnl: number | null;
+  entryPrice: number | null;
+  confidence: number;
   txHash: string | null;
   logTxHash: string | null;
   error: string | null;
@@ -85,6 +89,8 @@ export interface TradeRecord {
 export interface TradingStats {
   decisionCount: number;
   tradeCount: number;
+  /** Total trade records, regardless of status (includes paper-only and failed on-chain executions). */
+  totalTrades: number;
   winCount: number;
   lossCount: number;
   failedExecutions: number;
@@ -101,7 +107,33 @@ export class TradingDb {
     this.db = new Database(filePath);
     this.db.pragma("journal_mode = WAL");
     this.db.exec(SCHEMA);
+    this.migrate();
     this.seedPortfolio(startingEquityUsd);
+  }
+
+  /** Adds columns introduced after the initial schema to pre-existing databases, then backfills them. */
+  private migrate(): void {
+    const columns = (this.db.prepare("PRAGMA table_info(trades)").all() as Array<{ name: string }>).map(
+      (c) => c.name,
+    );
+    if (!columns.includes("entry_price")) {
+      this.db.exec("ALTER TABLE trades ADD COLUMN entry_price REAL");
+    }
+    if (!columns.includes("confidence")) {
+      this.db.exec("ALTER TABLE trades ADD COLUMN confidence REAL NOT NULL DEFAULT 0");
+    }
+
+    // Backfill entry_price for pre-existing CLOSE trades from the position they closed.
+    this.db.exec(`
+      UPDATE trades SET entry_price = (
+        SELECT price FROM trades AS open_trade
+        WHERE open_trade.asset = trades.asset
+          AND open_trade.action IN ('OPEN_LONG', 'OPEN_SHORT')
+          AND open_trade.timestamp < trades.timestamp
+        ORDER BY open_trade.timestamp DESC LIMIT 1
+      )
+      WHERE trades.action = 'CLOSE' AND trades.entry_price IS NULL
+    `);
   }
 
   private seedPortfolio(startingEquityUsd: number): void {
@@ -192,10 +224,10 @@ export class TradingDb {
     tx();
   }
 
-  /** Closes an open position at `exitPrice`, returning its realized PnL in USD. */
-  closePosition(asset: string, exitPrice: number): number {
+  /** Closes an open position at `exitPrice`, returning its realized PnL in USD and original entry price. */
+  closePosition(asset: string, exitPrice: number): { pnl: number; entryPrice: number } {
     const position = this.getOpenPosition(asset);
-    if (!position) return 0;
+    if (!position) return { pnl: 0, entryPrice: exitPrice };
 
     const direction = position.direction === "LONG" ? 1 : -1;
     const pnl = position.size * direction * ((exitPrice - position.entryPrice) / position.entryPrice);
@@ -208,7 +240,7 @@ export class TradingDb {
     });
     tx();
 
-    return pnl;
+    return { pnl, entryPrice: position.entryPrice };
   }
 
   recordDecision(signal: MarketSignal, decision: TradeDecision): void {
@@ -235,8 +267,8 @@ export class TradingDb {
   recordTrade(result: ExecutionResult): void {
     this.db
       .prepare(
-        `INSERT INTO trades (timestamp, asset, action, status, price, size, pnl, tx_hash, log_tx_hash, error)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO trades (timestamp, asset, action, status, price, size, pnl, entry_price, confidence, tx_hash, log_tx_hash, error)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
         result.timestamp,
@@ -246,6 +278,8 @@ export class TradingDb {
         result.price,
         result.size,
         result.pnl ?? null,
+        result.entryPrice ?? null,
+        result.confidence ?? 0,
         result.txHash ?? null,
         result.logTxHash ?? null,
         result.error ?? null,
@@ -292,6 +326,8 @@ export class TradingDb {
       price: number;
       size: number;
       pnl: number | null;
+      entry_price: number | null;
+      confidence: number;
       tx_hash: string | null;
       log_tx_hash: string | null;
       error: string | null;
@@ -304,6 +340,8 @@ export class TradingDb {
       price: r.price,
       size: r.size,
       pnl: r.pnl,
+      entryPrice: r.entry_price,
+      confidence: r.confidence,
       txHash: r.tx_hash,
       logTxHash: r.log_tx_hash,
       error: r.error,
@@ -312,6 +350,7 @@ export class TradingDb {
 
   getStats(): TradingStats {
     const decisionCount = (this.db.prepare("SELECT COUNT(*) AS c FROM decisions").get() as { c: number }).c;
+    const totalTrades = (this.db.prepare("SELECT COUNT(*) AS c FROM trades").get() as { c: number }).c;
     const tradeCount = (
       this.db.prepare("SELECT COUNT(*) AS c FROM trades WHERE status = 'success' AND action != 'NONE'").get() as {
         c: number;
@@ -331,7 +370,7 @@ export class TradingDb {
       this.db.prepare("SELECT COUNT(*) AS c FROM trades WHERE status = 'failed'").get() as { c: number }
     ).c;
 
-    return { decisionCount, tradeCount, winCount, lossCount, failedExecutions };
+    return { decisionCount, tradeCount, totalTrades, winCount, lossCount, failedExecutions };
   }
 
   close(): void {

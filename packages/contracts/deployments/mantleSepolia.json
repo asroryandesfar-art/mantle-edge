@@ -1,0 +1,21 @@
+{
+  "network": "mantleSepolia",
+  "chainId": 5003,
+  "deployedAt": "2026-06-11T16:09:12.388Z",
+  "deployer": "0x844771526F13d7a16d3135F7486545D61e81913C",
+  "contracts": {
+    "AgentIdentityRegistry": {
+      "address": "0x6EA3EA91896CBA417570F58B25f44ec4BE004ea1"
+    },
+    "LogRegistry": {
+      "address": "0xeB4848E15DaE5881300479f9BF057DbAf86F4D4b"
+    },
+    "AgentIdentityNFT": {
+      "address": "0xE355E725c60eea454a9ba47dD57e65A5650cb119",
+      "agentName": "MantleEdge Multi-Agent"
+    },
+    "TradeLogger": {
+      "address": "0x1Ef136f9dd6eA3A9f13Fb840854Ee3F5a2976628"
+    }
+  }
+}

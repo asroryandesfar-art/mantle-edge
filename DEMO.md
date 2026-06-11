@@ -2,13 +2,24 @@
 
 ## 0. Pre-flight (do this before the 30-minute run)
 
-- [ ] `packages/contracts/deployments/mantle.json` has real (non-null) addresses
-- [ ] `.env` has `AGENT_IDENTITY_NFT_ADDRESS`, `TRADE_LOGGER_ADDRESS`, `LOG_REGISTRY_ADDRESS`,
-      `AGENT_IDENTITY_REGISTRY_ADDRESS` set to the deployed addresses
-- [ ] Agent wallet (`AGENT_PRIVATE_KEY`'s address) has enough MNT for ~30 min of gas
-      (decision/execution logging txs are cheap, but budget for several)
-- [ ] Dashboard is deployed and pointed at the live `agent-feed.json` (not stale mock data)
-- [ ] Agent process is running (PM2/Docker) and `/health` returns `{"status":"ok"}`
+See `RAILWAY_DEPLOY.md` for the full deploy procedure (apps/api + apps/agent
+on Railway, dashboard on Vercel).
+
+- [x] `packages/contracts/deployments/mantleSepolia.json` has real (non-null)
+      addresses (mainnet deploy is blocked — agent wallet has 0 MNT, see
+      `RAILWAY_DEPLOY.md` Step 2)
+- [x] `.env` / Railway agent service vars have `AGENT_IDENTITY_NFT_ADDRESS`,
+      `TRADE_LOGGER_ADDRESS`, `LOG_REGISTRY_ADDRESS`,
+      `AGENT_IDENTITY_REGISTRY_ADDRESS` set to the deployed testnet addresses
+- [x] Agent wallet (`AGENT_PRIVATE_KEY`'s address) has enough testnet MNT for
+      ~30 min of gas (10 MNT funded — decision/execution logging txs are
+      cheap, but budget for several)
+- [ ] `apps/api` is deployed on Railway with a public domain, and the
+      dashboard's `NEXT_PUBLIC_API_URL` points to it
+- [ ] Dashboard shows live data via `GET /api/feed` (not the stale bundled
+      `agent-feed.json` fallback)
+- [ ] Agent process is running (Railway/PM2/Docker) and `/health` returns
+      `{"status":"ok"}`
 
 ## 1. The 30-minute run
 
@@ -40,17 +51,20 @@ Capture these as you go (screenshots + short screen recording):
 
 ## 3. On-chain links (fill in after the run)
 
-Mantle mainnet explorer base: `https://explorer.mantle.xyz`
+Mantle Sepolia (testnet) explorer base: `https://explorer.sepolia.mantle.xyz`
+(see `packages/contracts/deployments/mantleSepolia.json` for the source of truth)
 
 | Item | Address / Tx | Explorer link |
 |---|---|---|
-| AgentIdentityNFT contract | `<from deployments/mantle.json>` | `https://explorer.mantle.xyz/address/<addr>` |
-| TradeLogger contract | `<from deployments/mantle.json>` | `https://explorer.mantle.xyz/address/<addr>` |
-| Decision tx #1 | `<tx hash>` | `https://explorer.mantle.xyz/tx/<hash>` |
-| Decision tx #2 | `<tx hash>` | `https://explorer.mantle.xyz/tx/<hash>` |
-| Decision tx #3 | `<tx hash>` | `https://explorer.mantle.xyz/tx/<hash>` |
-| Execution tx | `<tx hash>` | `https://explorer.mantle.xyz/tx/<hash>` |
-| `updateStats` tx | `<tx hash>` | `https://explorer.mantle.xyz/tx/<hash>` |
+| AgentIdentityRegistry contract | `0x6EA3EA91896CBA417570F58B25f44ec4BE004ea1` | `https://explorer.sepolia.mantle.xyz/address/0x6EA3EA91896CBA417570F58B25f44ec4BE004ea1` |
+| LogRegistry contract | `0xeB4848E15DaE5881300479f9BF057DbAf86F4D4b` | `https://explorer.sepolia.mantle.xyz/address/0xeB4848E15DaE5881300479f9BF057DbAf86F4D4b` |
+| AgentIdentityNFT contract | `0xE355E725c60eea454a9ba47dD57e65A5650cb119` | `https://explorer.sepolia.mantle.xyz/address/0xE355E725c60eea454a9ba47dD57e65A5650cb119` |
+| TradeLogger contract | `0x1Ef136f9dd6eA3A9f13Fb840854Ee3F5a2976628` | `https://explorer.sepolia.mantle.xyz/address/0x1Ef136f9dd6eA3A9f13Fb840854Ee3F5a2976628` |
+| Decision tx #1 | `<tx hash>` | `https://explorer.sepolia.mantle.xyz/tx/<hash>` |
+| Decision tx #2 | `<tx hash>` | `https://explorer.sepolia.mantle.xyz/tx/<hash>` |
+| Decision tx #3 | `<tx hash>` | `https://explorer.sepolia.mantle.xyz/tx/<hash>` |
+| Execution tx | `<tx hash>` | `https://explorer.sepolia.mantle.xyz/tx/<hash>` |
+| `updateStats` tx | `<tx hash>` | `https://explorer.sepolia.mantle.xyz/tx/<hash>` |
 
 ## 4. Demo video (2-3 min) outline
 
@@ -69,10 +83,10 @@ Mantle mainnet explorer base: `https://explorer.mantle.xyz`
 
 - [x] GitHub repo link (public): https://github.com/asroryandesfar-art/mantle-edge
 - [x] Live dashboard URL: https://dashboard-pi-flax-19.vercel.app
-- [ ] Contract addresses on Mantle:
-  - AgentIdentityNFT: `<fill in>`
-  - TradeLogger: `<fill in>`
-  - AgentIdentityRegistry: `<fill in>`
-  - LogRegistry: `<fill in>`
+- [x] Contract addresses on Mantle Sepolia (chainId 5003):
+  - AgentIdentityNFT: `0xE355E725c60eea454a9ba47dD57e65A5650cb119`
+  - TradeLogger: `0x1Ef136f9dd6eA3A9f13Fb840854Ee3F5a2976628`
+  - AgentIdentityRegistry: `0x6EA3EA91896CBA417570F58B25f44ec4BE004ea1`
+  - LogRegistry: `0xeB4848E15DaE5881300479f9BF057DbAf86F4D4b`
 - [ ] Demo video (2-3 min): `<fill in>`
 - [ ] DoraHacks submission form filled

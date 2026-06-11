@@ -17,7 +17,16 @@ out/
 # Agent runtime data
 data/*.json
 data/*.db
+data/*.db-shm
+data/*.db-wal
 !data/.gitkeep
+
+# apps/api runtime data
+apps/api/data/*.json
+apps/api/data/*.db
+apps/api/data/*.db-shm
+apps/api/data/*.db-wal
+!apps/api/data/.gitkeep
 
 # Hardhat
 packages/contracts/cache/

@@ -58,6 +58,13 @@ const envSchema = z.object({
 
   // --- Health check server -------------------------------------------------
   PORT: z.coerce.number().int().positive().default(3001),
+
+  // --- apps/api bridge -------------------------------------------------------
+  // Base URL of the @mantle-edge/api server (apps/api), which persists
+  // decisions/trades/agent status and refreshes the dashboard's
+  // agent-feed.json. Defaults to apps/api's default port (3002); this app's
+  // own health server already owns port 3001.
+  API_URL: z.string().url().default("http://localhost:3002"),
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -122,6 +129,9 @@ export const config = {
   },
   server: {
     port: env.PORT,
+  },
+  api: {
+    url: env.API_URL,
   },
 };
 

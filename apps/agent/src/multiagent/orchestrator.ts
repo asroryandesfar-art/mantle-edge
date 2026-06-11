@@ -4,33 +4,30 @@ import { createLogger } from "../logger.js";
 import { TradingDb } from "./db.js";
 import { runExecutor } from "./executorAgent.js";
 import { runMarketAnalyst } from "./marketAnalyst.js";
-import { runReporter } from "./reporter.js";
+import { reportDecision, reportTrade, startHeartbeatLoop } from "./reporter.js";
 import { assessRisk } from "./riskManager.js";
-import type { MarketSignal } from "./types.js";
 
 const logger = createLogger("multiagent:orchestrator");
 
 const DB_PATH = path.join(config.dataDir, "trading.db");
 
-/** Most recent MarketSignal per asset, shared with the independent reporter refresh. */
-let latestSignals: MarketSignal[] = [];
-
 function errorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
 
-/** Runs Analyst -> RiskManager -> Executor for every watched asset, then refreshes the report. Never throws. */
+/** Runs Analyst -> RiskManager -> Executor for every watched asset, reporting results to apps/api. Never throws. */
 async function runCycle(db: TradingDb): Promise<void> {
   logger.info("cycle started", { time: new Date().toISOString() });
 
+  let signals;
   try {
-    latestSignals = await runMarketAnalyst();
+    signals = await runMarketAnalyst();
   } catch (err) {
     logger.error("MarketAnalystAgent failed, skipping this cycle", { error: errorMessage(err) });
     return;
   }
 
-  for (const signal of latestSignals) {
+  for (const signal of signals) {
     try {
       const portfolio = db.getPortfolioState();
       const decision = assessRisk(signal, portfolio);
@@ -48,6 +45,8 @@ async function runCycle(db: TradingDb): Promise<void> {
         reason: decision.reason,
       });
 
+      const decisionId = await reportDecision(signal);
+
       if (decision.approved && decision.action !== "NONE") {
         const result = await runExecutor(decision, db);
 
@@ -61,6 +60,8 @@ async function runCycle(db: TradingDb): Promise<void> {
           logTxHash: result.logTxHash,
           error: result.error,
         });
+
+        await reportTrade(result, decisionId);
       }
     } catch (err) {
       logger.error("pipeline step failed for asset, continuing with remaining assets", {
@@ -70,14 +71,13 @@ async function runCycle(db: TradingDb): Promise<void> {
     }
   }
 
-  await runReporter(db, { latestSignals });
   logger.info("cycle complete", { time: new Date().toISOString() });
 }
 
 /**
  * Starts the multi-agent trading loop: Analyst -> RiskManager -> Executor ->
- * Reporter every `ORCHESTRATOR_CYCLE_MS`, plus an independent Reporter
- * refresh every `REPORTER_INTERVAL_MS`. Returns a function that stops both
+ * apps/api every `ORCHESTRATOR_CYCLE_MS`, plus an independent heartbeat to
+ * apps/api every `REPORTER_INTERVAL_MS`. Returns a function that stops both
  * loops and closes the database.
  */
 export async function startOrchestrator(): Promise<() => void> {
@@ -96,13 +96,11 @@ export async function startOrchestrator(): Promise<() => void> {
     void runCycle(db);
   }, config.orchestrator.cycleIntervalMs);
 
-  const reporterTimer = setInterval(() => {
-    void runReporter(db, { latestSignals });
-  }, config.orchestrator.reporterIntervalMs);
+  const stopHeartbeat = startHeartbeatLoop(db);
 
   return () => {
     clearInterval(cycleTimer);
-    clearInterval(reporterTimer);
+    stopHeartbeat();
     db.close();
   };
 }

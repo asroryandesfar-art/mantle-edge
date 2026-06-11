@@ -73,7 +73,7 @@ export default function DashboardPage() {
             value={data.metrics.pnl}
             valueClassName="text-success"
             accentClassName="border-l-success"
-            subtitle={`${data.metrics.tradeCount} executions`}
+            subtitle={`${data.metrics.totalTrades} paper trades`}
           />
           <StatCard
             label="Win Rate"
@@ -82,10 +82,10 @@ export default function DashboardPage() {
             subtitle={`Avg confidence ${data.metrics.confidenceAvg}%`}
           />
           <StatCard
-            label="Total Trades"
+            label="On-Chain Executions"
             value={data.metrics.tradeCount}
             accentClassName="border-l-border"
-            subtitle={`${data.metrics.failedExecutions} failed executions`}
+            subtitle={`${data.metrics.failedExecutions} failed / ${data.metrics.totalTrades} total`}
           />
           <StatCard
             label="Active Position"

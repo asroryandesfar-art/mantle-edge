@@ -2,7 +2,7 @@
 # Build context must be the monorepo root, e.g.:
 #   docker build -f apps/agent/Dockerfile -t mantle-edge-agent .
 
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 RUN corepack enable
 
 # --- Build stage: install full workspace, build shared + agent, then -------

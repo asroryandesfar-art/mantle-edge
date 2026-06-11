@@ -49,7 +49,9 @@ export default function IdentityPage() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-black text-foreground">{identity.name}</h2>
-                  <p className="text-primary font-mono text-xs">#{identity.tokenId}</p>
+                  <p className="text-primary font-mono text-xs">
+                    {identity.tokenId !== "-" ? `#${identity.tokenId}` : "Pending Mint"}
+                  </p>
                 </div>
               </CardContent>
               <div className="p-6 border-t border-border/50 bg-muted/10 grid grid-cols-2 gap-4">

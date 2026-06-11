@@ -1,70 +1,258 @@
 {
-  "status": "LIVE",
-  "uptime": "0d 0h 2m",
-  "terminalId": "MNT-EDGE-MULTIAGENT",
-  "gasPrice": "50.0001 Gwei",
-  "agentAddress": "0x844771526F13d7a16d3135F7486545D61e81913C",
+  "status": "RUNNING",
+  "uptime": "0d 4h 35m",
+  "terminalId": "MNT-EDGE-API",
+  "gasPrice": "n/a",
+  "agentAddress": "-",
   "apiLatencyMs": 0,
   "position": {
-    "pair": "MNT/USDT",
-    "direction": "WAIT",
-    "size": "0.00 USD",
+    "pair": "BTC/USDT",
+    "direction": "LONG",
+    "size": "199.58 USD",
     "leverage": "1x",
     "roa": "+0.00%"
   },
   "comparison": {
     "yourPnl": "+0.00%",
-    "agentPnl": "+0.00%",
-    "edge": "+0.00%"
+    "agentPnl": "+0.20%",
+    "edge": "+0.20%"
   },
   "metrics": {
-    "pnl": "+0.00%",
-    "winRate": "0%",
-    "tradeCount": 0,
-    "confidenceAvg": 0,
+    "pnl": "+0.20%",
+    "winRate": "67%",
+    "tradeCount": 3,
+    "totalTrades": 6,
+    "confidenceAvg": 56,
     "failedExecutions": 0,
     "agentContributionPct": 100,
-    "agentContributionTrades": 0
+    "agentContributionTrades": 3
   },
+  "tickers": [],
   "decisions": [
     {
-      "time": "2026-06-10T20:52:33.433Z",
-      "action": "WAIT",
+      "time": "2026-06-11T17:52:36.989Z",
+      "action": "LONG",
       "asset": "MNT/USDT",
-      "reasoning": "Market data unavailable: fetch failed",
-      "confidence": 0
+      "reasoning": "Rule-based: RSI(14)=56.2 is neutral; EMA20 (0.5372) is above EMA50 (0.5366), an uptrend.",
+      "confidence": 51
     },
     {
-      "time": "2026-06-10T20:52:33.430Z",
+      "time": "2026-06-11T17:52:36.985Z",
       "action": "WAIT",
       "asset": "ETH/USDT",
-      "reasoning": "Market data unavailable: fetch failed",
-      "confidence": 0
+      "reasoning": "Rule-based: RSI(14)=74.0 is overbought; EMA20 (1651.0403) is above EMA50 (1648.3318), an uptrend.",
+      "confidence": 41
     },
     {
-      "time": "2026-06-10T20:52:33.407Z",
-      "action": "WAIT",
+      "time": "2026-06-11T17:52:36.912Z",
+      "action": "LONG",
       "asset": "BTC/USDT",
-      "reasoning": "Market data unavailable: fetch failed",
-      "confidence": 0
+      "reasoning": "Rule-based: RSI(14)=63.8 is neutral; EMA20 (62790.5371) is above EMA50 (62666.7272), an uptrend.",
+      "confidence": 52
+    },
+    {
+      "time": "2026-06-11T17:47:37.091Z",
+      "action": "LONG",
+      "asset": "MNT/USDT",
+      "reasoning": "Rule-based: RSI(14)=53.1 is neutral; EMA20 (0.5371) is above EMA50 (0.5366), an uptrend.",
+      "confidence": 51
+    },
+    {
+      "time": "2026-06-11T17:47:37.076Z",
+      "action": "WAIT",
+      "asset": "ETH/USDT",
+      "reasoning": "Rule-based: RSI(14)=70.2 is overbought; EMA20 (1650.0419) is above EMA50 (1647.9207), an uptrend.",
+      "confidence": 41
+    },
+    {
+      "time": "2026-06-11T17:47:36.928Z",
+      "action": "LONG",
+      "asset": "BTC/USDT",
+      "reasoning": "Rule-based: RSI(14)=61.9 is neutral; EMA20 (62781.4289) is above EMA50 (62662.9767), an uptrend.",
+      "confidence": 52
+    },
+    {
+      "time": "2026-06-11T17:42:36.856Z",
+      "action": "LONG",
+      "asset": "MNT/USDT",
+      "reasoning": "Rule-based: RSI(14)=47.3 is neutral; EMA20 (0.5371) is above EMA50 (0.5365), an uptrend; volume is anomalously low (z=-2.83).",
+      "confidence": 52
+    },
+    {
+      "time": "2026-06-11T17:42:36.851Z",
+      "action": "WAIT",
+      "asset": "ETH/USDT",
+      "reasoning": "Rule-based: RSI(14)=71.0 is overbought; EMA20 (1647.4345) is above EMA50 (1646.8676), an uptrend.",
+      "confidence": 40
+    },
+    {
+      "time": "2026-06-11T17:42:36.841Z",
+      "action": "LONG",
+      "asset": "BTC/USDT",
+      "reasoning": "Rule-based: RSI(14)=63.6 is neutral; EMA20 (62727.0173) is above EMA50 (62638.9932), an uptrend.",
+      "confidence": 51
+    },
+    {
+      "time": "2026-06-11T17:37:36.820Z",
+      "action": "LONG",
+      "asset": "MNT/USDT",
+      "reasoning": "Rule-based: RSI(14)=45.0 is neutral; EMA20 (0.5370) is above EMA50 (0.5365), an uptrend.",
+      "confidence": 53
+    },
+    {
+      "time": "2026-06-11T17:37:36.815Z",
+      "action": "WAIT",
+      "asset": "ETH/USDT",
+      "reasoning": "Rule-based: RSI(14)=70.6 is overbought; EMA20 (1647.3297) is above EMA50 (1646.8244), an uptrend.",
+      "confidence": 40
+    },
+    {
+      "time": "2026-06-11T17:37:36.812Z",
+      "action": "LONG",
+      "asset": "BTC/USDT",
+      "reasoning": "Rule-based: RSI(14)=60.4 is neutral; EMA20 (62712.0712) is above EMA50 (62632.8389), an uptrend.",
+      "confidence": 51
+    },
+    {
+      "time": "2026-06-11T17:32:36.802Z",
+      "action": "LONG",
+      "asset": "MNT/USDT",
+      "reasoning": "Rule-based: RSI(14)=35.1 is neutral; EMA20 (0.5367) is above EMA50 (0.5364), an uptrend.",
+      "confidence": 58
+    },
+    {
+      "time": "2026-06-11T17:32:36.793Z",
+      "action": "SHORT",
+      "asset": "ETH/USDT",
+      "reasoning": "Rule-based: RSI(14)=62.0 is neutral; EMA20 (1645.7507) is below EMA50 (1646.1743), a downtrend.",
+      "confidence": 56
+    },
+    {
+      "time": "2026-06-11T17:32:36.785Z",
+      "action": "LONG",
+      "asset": "BTC/USDT",
+      "reasoning": "Rule-based: RSI(14)=60.5 is neutral; EMA20 (62712.7866) is above EMA50 (62633.1335), an uptrend.",
+      "confidence": 51
+    },
+    {
+      "time": "2026-06-11T17:27:36.862Z",
+      "action": "LONG",
+      "asset": "MNT/USDT",
+      "reasoning": "Rule-based: RSI(14)=23.9 is oversold; EMA20 (0.5369) is above EMA50 (0.5365), an uptrend.",
+      "confidence": 64
+    },
+    {
+      "time": "2026-06-11T17:27:36.851Z",
+      "action": "WAIT",
+      "asset": "ETH/USDT",
+      "reasoning": "Rule-based: RSI(14)=29.8 is oversold; EMA20 (1643.9135) is below EMA50 (1645.5253), a downtrend.",
+      "confidence": 40
+    },
+    {
+      "time": "2026-06-11T17:27:36.767Z",
+      "action": "LONG",
+      "asset": "BTC/USDT",
+      "reasoning": "Rule-based: RSI(14)=25.6 is oversold; EMA20 (62651.5751) is above EMA50 (62608.0926), an uptrend; volume is anomalously low (z=-2.44).",
+      "confidence": 63
+    },
+    {
+      "time": "2026-06-11T17:22:36.740Z",
+      "action": "LONG",
+      "asset": "MNT/USDT",
+      "reasoning": "Rule-based: RSI(14)=24.7 is oversold; EMA20 (0.5370) is above EMA50 (0.5365), an uptrend.",
+      "confidence": 63
+    },
+    {
+      "time": "2026-06-11T17:22:36.736Z",
+      "action": "WAIT",
+      "asset": "ETH/USDT",
+      "reasoning": "Rule-based: RSI(14)=29.6 is oversold; EMA20 (1643.8768) is below EMA50 (1645.5102), a downtrend.",
+      "confidence": 40
     }
   ],
-  "trades": [],
+  "trades": [
+    {
+      "time": "2026-06-11T17:18:13.736Z",
+      "asset": "BTC/USDT",
+      "direction": "LONG",
+      "confidence": 62,
+      "size": "199.58 USD",
+      "entryPrice": "62412",
+      "exitPrice": "-",
+      "pnl": "-",
+      "txHash": "-"
+    },
+    {
+      "time": "2026-06-11T15:03:15.003Z",
+      "asset": "MNT/USDT",
+      "direction": "LONG",
+      "confidence": 61,
+      "size": "199.95 USD",
+      "entryPrice": "0.535751",
+      "exitPrice": "-",
+      "pnl": "-",
+      "txHash": "-"
+    },
+    {
+      "time": "2026-06-11T12:55:40.322Z",
+      "asset": "MNT/USDT",
+      "direction": "LONG",
+      "confidence": 70,
+      "size": "300.00 USD",
+      "entryPrice": "0.75",
+      "exitPrice": "0.78",
+      "pnl": "+4.00%",
+      "txHash": "-"
+    },
+    {
+      "time": "2026-06-11T10:54:52.040Z",
+      "asset": "MNT/USDT",
+      "direction": "LONG",
+      "confidence": 81,
+      "size": "600.00 USD",
+      "entryPrice": "0.7312",
+      "exitPrice": "-",
+      "pnl": "-",
+      "txHash": "0xseed3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567ab2"
+    },
+    {
+      "time": "2026-06-11T09:54:52.040Z",
+      "asset": "MNT/USDT",
+      "direction": "SHORT",
+      "confidence": 65,
+      "size": "400.00 USD",
+      "entryPrice": "0.7583",
+      "exitPrice": "0.7641",
+      "pnl": "-0.77%",
+      "txHash": "0xseed2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567a"
+    },
+    {
+      "time": "2026-06-11T07:54:52.040Z",
+      "asset": "MNT/USDT",
+      "direction": "LONG",
+      "confidence": 78,
+      "size": "500.00 USD",
+      "entryPrice": "0.7421",
+      "exitPrice": "0.7589",
+      "pnl": "+2.26%",
+      "txHash": "0xseed1a2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef123456"
+    }
+  ],
   "identity": {
-    "name": "MantleEdge Multi-Agent",
+    "name": "MantleEdge API Agent",
     "tokenId": "-",
-    "identifier": "did:mantle:agent:0x844771526F13d7a16d3135F7486545D61e81913C",
-    "valueManaged": "$1000.00",
+    "identifier": "did:mantle:agent:api",
+    "valueManaged": "$997.89",
     "birthBlock": "-",
     "authorizedSchemes": [
       "ERC-8004",
       "EIP-712"
     ],
     "uptimeSignature": "-",
-    "totalTrades": "0",
-    "totalPnl": "+0.00%",
-    "owner": "0x844771526F13d7a16d3135F7486545D61e81913C",
-    "trustScore": 0,
+    "totalTrades": "6",
+    "totalPnl": "+0.20%",
+    "owner": "-",
+    "trustScore": 56,
     "metadata": {
       "strategy": "Multi-Agent: Analyst -> RiskManager -> Executor -> Reporter",
       "model": "rule-based fallback",

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { History, LayoutDashboard, User } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { TARGET_CHAIN } from "@/lib/wallet"
 import { PulsingDot } from "./PulsingDot"
 import { WalletConnectButton } from "./WalletConnectButton"
 
@@ -51,7 +52,7 @@ export function Sidebar() {
       <div className="space-y-3 pt-6 border-t border-border/30">
         <div className="flex items-center gap-2 px-1">
           <PulsingDot />
-          <span className="text-xs font-mono font-bold text-foreground">Mantle Mainnet</span>
+          <span className="text-xs font-mono font-bold text-foreground">{TARGET_CHAIN.name}</span>
         </div>
         <WalletConnectButton />
       </div>

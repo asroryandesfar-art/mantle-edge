@@ -87,6 +87,8 @@ export async function runExecutor(decision: TradeDecision, db: TradingDb): Promi
 
   let positionDirection: "LONG" | "SHORT";
   let pnl: number | undefined;
+  let entryPrice: number | undefined;
+  const confidence = decision.signal.confidence;
 
   try {
     if (decision.action === "OPEN_LONG" || decision.action === "OPEN_SHORT") {
@@ -108,6 +110,7 @@ export async function runExecutor(decision: TradeDecision, db: TradingDb): Promi
           action: decision.action,
           price,
           size: decision.size,
+          confidence,
           error: "No open position to close",
           timestamp,
         };
@@ -115,7 +118,7 @@ export async function runExecutor(decision: TradeDecision, db: TradingDb): Promi
         return result;
       }
       positionDirection = existing.direction;
-      pnl = db.closePosition(decision.asset, price);
+      ({ pnl, entryPrice } = db.closePosition(decision.asset, price));
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -126,6 +129,7 @@ export async function runExecutor(decision: TradeDecision, db: TradingDb): Promi
       action: decision.action,
       price,
       size: decision.size,
+      confidence,
       error: message,
       timestamp,
     };
@@ -143,6 +147,8 @@ export async function runExecutor(decision: TradeDecision, db: TradingDb): Promi
     price,
     size: decision.size,
     pnl,
+    entryPrice,
+    confidence,
     txHash: swap?.txHash,
     logTxHash,
     error: swap?.error,

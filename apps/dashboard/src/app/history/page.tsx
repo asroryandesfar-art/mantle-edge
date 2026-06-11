@@ -91,14 +91,18 @@ export default function HistoryPage() {
                       {t.pnl}
                     </TableCell>
                     <TableCell className="text-right">
-                      <a
-                        href={`https://explorer.mantle.xyz/tx/${t.txHash}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-[10px] font-bold text-primary hover:underline"
-                      >
-                        EXPLORER <ExternalLink className="w-3 h-3 ml-1" />
-                      </a>
+                      {t.txHash && t.txHash !== "-" ? (
+                        <a
+                          href={`${process.env.NEXT_PUBLIC_EXPLORER || "https://explorer.mantle.xyz"}/tx/${t.txHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-[10px] font-bold text-primary hover:underline"
+                        >
+                          EXPLORER <ExternalLink className="w-3 h-3 ml-1" />
+                        </a>
+                      ) : (
+                        <span className="text-[10px] font-bold text-muted-foreground">PAPER TRADE</span>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

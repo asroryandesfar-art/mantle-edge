@@ -81,6 +81,10 @@ export interface ExecutionResult {
   size: number;
   /** Realized PnL in USD, set when action === "CLOSE". */
   pnl?: number;
+  /** Entry price of the position being closed, set when action === "CLOSE". */
+  entryPrice?: number;
+  /** Confidence (0-100) of the signal that produced this execution. */
+  confidence?: number;
   /** On-chain swap transaction hash, if a real DEX trade was executed. */
   txHash?: string;
   /** On-chain LogRegistry transaction hash, if logging succeeded. */

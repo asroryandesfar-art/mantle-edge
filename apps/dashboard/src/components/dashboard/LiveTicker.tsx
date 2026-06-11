@@ -1,60 +1,37 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import useSWR from "swr"
+import { FEED_URL, FEED_REFRESH_INTERVAL_MS, fetcher } from "@/lib/feed"
 
-interface PriceData {
+interface TickerEntry {
   symbol: string
-  price: string
-  change: string
+  price: number
+  changeVsEma20Pct: number
 }
 
+function formatPrice(price: number): string {
+  if (price >= 100) return price.toFixed(2)
+  if (price >= 1) return price.toFixed(3)
+  return price.toFixed(4)
+}
+
+/** Scrolling marquee of live asset prices, sourced from the agent's own market data feed. */
 export function LiveTicker() {
-  const [prices, setPrices] = useState<PriceData[]>([
-    { symbol: "MNTUSDT", price: "0.8542", change: "+2.4%" },
-    { symbol: "BTCUSDT", price: "68234.1", change: "-0.5%" },
-    { symbol: "ETHUSDT", price: "3842.15", change: "+1.2%" },
-    { symbol: "WMNTUSDC", price: "0.8545", change: "+2.3%" },
-  ])
+  const { data } = useSWR(FEED_URL, fetcher, { refreshInterval: FEED_REFRESH_INTERVAL_MS })
+  const tickers: TickerEntry[] = data?.tickers ?? []
 
-  useEffect(() => {
-    const ws = new WebSocket("wss://stream.bybit.com/v5/public/linear")
-    
-    ws.onopen = () => {
-      ws.send(JSON.stringify({
-        op: "subscribe",
-        args: ["tickers.MNTUSDT", "tickers.BTCUSDT", "tickers.ETHUSDT"]
-      }))
-    }
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data)
-      if (data.topic?.startsWith("tickers")) {
-        const ticker = data.data
-        setPrices(prev => prev.map(p => {
-          if (p.symbol === ticker.symbol) {
-            return {
-              ...p,
-              price: ticker.lastPrice,
-              change: (parseFloat(ticker.price24hPcnt) * 100).toFixed(2) + "%"
-            }
-          }
-          return p
-        }))
-      }
-    }
-
-    return () => ws.close()
-  }, [])
+  if (tickers.length === 0) return null
 
   return (
     <div className="w-full bg-muted/20 border-y border-border overflow-hidden py-1.5 flex whitespace-nowrap">
       <div className="animate-marquee flex gap-12 px-4">
-        {[...prices, ...prices].map((p, i) => (
+        {[...tickers, ...tickers].map((p, i) => (
           <div key={i} className="flex gap-2 text-xs font-mono">
             <span className="text-muted-foreground">{p.symbol}</span>
-            <span className="text-foreground font-bold">{p.price}</span>
-            <span className={p.change.startsWith("+") ? "text-success" : "text-destructive"}>
-              {p.change}
+            <span className="text-foreground font-bold">{formatPrice(p.price)}</span>
+            <span className={p.changeVsEma20Pct >= 0 ? "text-success" : "text-destructive"}>
+              {p.changeVsEma20Pct >= 0 ? "+" : ""}
+              {p.changeVsEma20Pct.toFixed(2)}% vs EMA20
             </span>
           </div>
         ))}
